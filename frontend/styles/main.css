@@ -1,0 +1,60 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    font-family: monospace;
+
+    background-color: #FAFAFA;
+}
+
+button {
+    cursor: pointer;
+}
+
+input, button {
+    font-family: monospace;
+    background-color: #FAFAFA;
+
+    border: 1px solid #111;
+    border-radius: 4px;
+}
+
+form {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 1em;
+
+    text-align: center;
+
+    width: 250px;
+}
+
+form > * {
+    width: 100%;
+}
+
+form input {
+    padding: 4px;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+form button {
+    width: fit-content;
+
+    padding: 0.5em;
+    padding-left: 1em;
+    padding-right: 1em;
+}

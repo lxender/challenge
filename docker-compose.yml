@@ -4,8 +4,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     container_name: challenge_frontend
-    ports:
-      - "5000:5000"
+    network_mode: "host"
     volumes:
       - ./frontend:/app
     environment:
@@ -16,8 +15,7 @@ services:
       context: ./auth-service
       dockerfile: Dockerfile
     container_name: challenge_auth-service
-    ports:
-      - "5050:5050"
+    network_mode: "host"
     volumes:
       - ./auth-service:/app
     environment:
