@@ -1,2 +1,5 @@
 fastapi[standard]
 pydantic
+passlib[argon2]
+pyjwt
+python-dotenv
