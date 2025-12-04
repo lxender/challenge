@@ -1,7 +1,7 @@
 from passlib.hash import argon2
 import jwt
 from datetime import datetime, timedelta
-from config import SECRET_KEY, ACCESS_TOKEN_EXPIRE_MINUTES
+from config import ACCESS_TOKEN_SECRET_KEY, ACCESS_TOKEN_EXPIRE_MINUTES
 
 def hash_password(password: str) -> str:
     return argon2.hash(password)
@@ -13,11 +13,11 @@ def create_access_token(data: dict) -> str:
     to_encode = data.copy()
     expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
-    return jwt.encode(to_encode, SECRET_KEY, algorithm="HS256")
+    return jwt.encode(to_encode, ACCESS_TOKEN_SECRET_KEY, algorithm="HS256")
 
 def decode_access_token(token: str) -> dict | None:
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        payload = jwt.decode(token, ACCESS_TOKEN_SECRET_KEY, algorithms=["HS256"])
         return payload
     except jwt.ExpiredSignatureError:
         return None
