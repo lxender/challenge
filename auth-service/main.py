@@ -34,7 +34,8 @@ def register(registerUser: RegisterUser):
     hashed = hash_password(registerUser.password)
     create_user(registerUser.email, registerUser.name, hashed)
 
-    access_token = create_access_token({"sub": email})
+    # Add user identification to the access token
+    access_token = create_access_token({"sub": registerUser.email})
 
     return {
         "message": "User created successfully",
@@ -48,6 +49,7 @@ def login(res: Response, loginUser: LoginUser):
     if not dbUser or not verify_password(loginUser.password, dbUser["hashedPassword"]):
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
+    # Add user identification to the access token
     access_token = create_access_token({"sub": loginUser.email})
 
     return {
