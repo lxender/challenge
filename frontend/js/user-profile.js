@@ -13,11 +13,9 @@ class UserProfile extends HTMLElement {
 
         const res = await fetch(
             `${BACKEND_URL}/profile`,
-            {
-                method: "POST", headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            }
+            { method: "POST", headers: {
+                "Authorization": `Bearer ${token}`
+            }}
         );
         const json = await res.json();
         
@@ -36,8 +34,12 @@ class UserProfile extends HTMLElement {
 
     render() {
         if (this.data === undefined) return;
+        console.log(this.data);
 
         this.innerHTML = "";
+
+        // Don't expose the password, use a dummy field
+        this.data["password"] = "***********";
 
         for (const key in this.data) {
             const detail = document.createElement("user-profile-item");

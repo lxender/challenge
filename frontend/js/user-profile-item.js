@@ -1,28 +1,17 @@
-const templateStyle = `
-<style>
-    #value-wrapper {
-        display: flex;
-        gap: 1em;
-        align-items: baseline;
-    }
-</style>
-`
-
 const showModeTemplate = `
-${templateStyle}
 <h3 id="title"></h3>
 <div id="value-wrapper">
-    <span id="value"></span>
+    <div id="value"></div>
     <button id="value-edit-btn">Update</button>
 </div>
 `;
 
 const editModeTemplate = `
-${templateStyle}
 <h3 id="title"></h3>
 <div id="value-wrapper">
     <input />
     <button id="value-save-btn">Save</button>
+    <button id="value-cancel-btn">Cancel</button>
 </div>
 `;
 
@@ -32,7 +21,6 @@ class UserProfileItem extends HTMLElement {
 
         this.mode = "show";
 
-        this.attachShadow({ mode: "open" });
         this.render();
     }
 
@@ -63,30 +51,34 @@ class UserProfileItem extends HTMLElement {
 
     render() {
         if (this._data === undefined) return;
-        const root = this.shadowRoot;
-        root.innerHTML = "";
+        this.innerHTML = "";
 
         const template = this.mode === "show" ? showModeTemplate : editModeTemplate;
-        root.innerHTML = template;
+        this.innerHTML = template;
 
         const key = Object.keys(this._data)[0];
 
-        const title = root.getElementById("title");
+        const title = this.querySelector("#title");
         title.innerHTML = key.substring(0, 1).toUpperCase() + key.substring(1);
 
         if (this.mode === "show") {
-            const valueEl = root.getElementById("value");
+            const valueEl = this.querySelector("#value");
             valueEl.innerHTML = this._data[key];
 
-            const editBtn = root.querySelector("button");
+            const editBtn = this.querySelector("#value-edit-btn");
             editBtn.addEventListener("click", () => this.mode = "edit");
         } else {
-            const input = root.querySelector("input");
-            input.value = this._data[key];
+            const input = this.querySelector("input");
+            input.value = key === "password" ? "" : this._data[key];
 
-            const saveBtn = root.querySelector("button");
+            const saveBtn = this.querySelector("#value-save-btn");
             saveBtn.addEventListener("click", () => {
                 this.save(key, input.value);
+            });
+
+            const cancelBtn = this.querySelector("#value-cancel-btn");
+            cancelBtn.addEventListener("click", () => {
+                this.mode = "show";
             });
         }
     }

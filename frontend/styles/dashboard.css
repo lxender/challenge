@@ -1,0 +1,12 @@
+user-profile {
+    width: 300px;
+}
+
+#value-wrapper {
+    display: flex;
+    gap: 1em;
+    align-items: baseline;
+    justify-content: space-between;
+
+    padding-left: 1em;
+}
