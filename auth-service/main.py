@@ -1,21 +1,13 @@
 import uvicorn
 from pydantic import BaseModel
-from fastapi import FastAPI, HTTPException, Form, Response
+from fastapi import FastAPI, HTTPException, Form, Response, Depends, Header
 from fastapi.middleware.cors import CORSMiddleware
 
+from models import RegisterUser, LoginUser
 from db import init_db, get_user_by_email, create_user
-from security import hash_password, verify_password, create_access_token
+from security import hash_password, verify_password, create_access_token, decode_access_token
 
 init_db()
-
-class LoginUser(BaseModel):
-    email: str
-    password: str
-
-class RegisterUser(BaseModel):
-    email: str
-    name: str
-    password: str
 
 app = FastAPI()
 app.add_middleware(
@@ -25,6 +17,27 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+def get_current_user(authorization: str = Header(...)):
+    # Expects the header "Bearer <token>"
+    try:
+        token = authorization.split(" ")[1]
+    except:
+        raise HTTPException(status_code=401, detail="Invalid Authorization header")
+
+    payload = decode_access_token(token)
+    if payload is None:
+        raise HTTPException(status_code=401, detail="Invalid or expired token")
+
+    email = payload.get("sub")
+    if not email:
+        raise HTTPException(status_code=401, detail="Invalid token payload")
+
+    user = get_user_by_email(email)
+    if not user:
+        raise HTTPException(status_code=401, detail="User not found")
+
+    return user
 
 @app.post("/auth/register")
 def register(registerUser: RegisterUser):
@@ -56,6 +69,15 @@ def login(res: Response, loginUser: LoginUser):
         "message": "Logged in",
         "access_token": access_token,
         "token_type": "bearer"
+    }
+
+@app.post("/profile")
+def profile(user=Depends(get_current_user)):
+    return {
+        "details": {
+            "email": user["email"],
+            "name": user["name"]
+        }
     }
 
 
