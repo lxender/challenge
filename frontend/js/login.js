@@ -13,9 +13,12 @@ document.getElementById("loginForm").addEventListener("submit", async e => {
         credentials: "include"
     });
 
+    const json = await res.json();
+
     if (res.ok) {
+        sessionStorage.setItem("jwt", json.access_token);
         window.location.href = "/dashboard.html";
     } else {
-        alert("Invalid credentials");
+        alert(json.detail);
     }
 });
