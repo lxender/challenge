@@ -4,7 +4,7 @@ from fastapi import FastAPI, HTTPException, Form, Response, Depends, Header, Bod
 from fastapi.middleware.cors import CORSMiddleware
 
 from models import User, LoginUser, ProfileUpdateUser
-from db import init_db, get_user_by_email, create_user, update_user
+from db import init_db, get_user_by_email, get_user_by_id, create_user, update_user
 from security import hash_password, verify_password, create_access_token, decode_access_token
 
 init_db()
@@ -32,11 +32,11 @@ def get_current_user(authorization: str = Header(...)):
     if payload is None:
         raise HTTPException(status_code=401, detail="Invalid or expired token")
 
-    email = payload.get("sub")
-    if not email:
+    loginId = payload.get("sub")
+    if not loginId:
         raise HTTPException(status_code=401, detail="Invalid token payload")
 
-    user = get_user_by_email(email)
+    user = get_user_by_id(loginId)
     if not user:
         raise HTTPException(status_code=401, detail="User not found")
 
@@ -49,9 +49,10 @@ def register(user: User):
 
     hashed = hash_password(user.password)
     create_user(user.email, user.name, hashed)
+    dbUser = get_user_by_email(user.email)
 
     # Add user identification to the access token
-    access_token = create_access_token({"sub": user.email})
+    access_token = create_access_token({"sub": str(dbUser["loginId"])})
 
     return {
         "message": "User created successfully",
@@ -66,7 +67,7 @@ def login(res: Response, loginUser: LoginUser):
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
     # Add user identification to the access token
-    access_token = create_access_token({"sub": loginUser.email})
+    access_token = create_access_token({"sub": str(dbUser["loginId"])})
 
     return {
         "message": "Logged in",
@@ -94,12 +95,12 @@ def profile_update(
 
     if field == "password":
         hashed = hash_password(value)
-        update_user(user["email"], field, hashed)
+        update_user(user["loginId"], field, hashed)
 
-    update_user(user["email"], field, value)
+    update_user(user["loginId"], field, value)
     # invalidate access token if email changed
 
-    return get_user_by_email(user["email"])
+    return get_user_by_id(user["loginId"])
 
 
 if __name__ == "__main__":

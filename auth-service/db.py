@@ -29,6 +29,14 @@ def get_user_by_email(email: str) -> Optional[sqlite3.Row]:
     conn.close()
     return user
 
+def get_user_by_id(loginId: int):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM users WHERE loginId = ?", (loginId,))
+    user = cursor.fetchone()
+    conn.close()
+    return user
+
 def create_user(email: str, name: str, hashed_password: str):
     conn = get_connection()
     cursor = conn.cursor()
@@ -39,12 +47,12 @@ def create_user(email: str, name: str, hashed_password: str):
     conn.commit()
     conn.close()
 
-def update_user(email: str, field: str, new_value: str):
+def update_user(login_id: int, field: str, new_value: str):
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute(
-        f"UPDATE users SET {field} = ? WHERE email = ?",
-        (new_value, email)
+        f"UPDATE users SET {field} = ? WHERE loginId = ?",
+        (new_value, login_id)
     )
     conn.commit()
     conn.close()
