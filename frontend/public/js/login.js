@@ -24,7 +24,7 @@ class XLogin extends HTMLElement {
 
         if (res.ok) {
             sessionStorage.setItem("jwt", json.access_token);
-            window.location.href = "/dashboard.html";
+            window.location.href = "/dashboard";
         } else {
             alert(json.detail);
         }
@@ -37,7 +37,7 @@ class XLogin extends HTMLElement {
             <input type="password" placeholder="Password" name="password" id="password" required>
             <button type="submit">Login</button>
         </form>
-        <a href="/register.html"><small>Don't have an account?</small></a>
+        <a href="/register"><small>Don't have an account?</small></a>
         `
 
         this.innerHTML = templateString;

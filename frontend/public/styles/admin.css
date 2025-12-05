@@ -1,0 +1,7 @@
+body {
+    height: unset;
+
+    display: block;
+    justify-content: unset;
+    align-items: unset;
+}
