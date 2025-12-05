@@ -13,3 +13,12 @@ class ProfileUpdateUser(BaseModel):
     email: str | None = None
     name: str | None = None
     password: str | None = None
+
+class AdminUserUpdate(BaseModel):
+    loginId: int
+    email: str | None = None
+    name: str | None = None
+    password: str | None = None
+
+class AdminUserDelete(BaseModel):
+    loginId: int

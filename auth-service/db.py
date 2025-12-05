@@ -21,6 +21,13 @@ def init_db():
     conn.commit()
     conn.close()
 
+def get_all_users():
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM users")
+    users = cursor.fetchall()
+    return users
+
 def get_user_by_email(email: str) -> Optional[sqlite3.Row]:
     conn = get_connection()
     cursor = conn.cursor()
@@ -29,7 +36,7 @@ def get_user_by_email(email: str) -> Optional[sqlite3.Row]:
     conn.close()
     return user
 
-def get_user_by_id(loginId: int):
+def get_user_by_id(loginId: int) -> Optional[sqlite3.Row]:
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM users WHERE loginId = ?", (loginId,))
@@ -53,6 +60,16 @@ def update_user(login_id: int, field: str, new_value: str):
     cursor.execute(
         f"UPDATE users SET {field} = ? WHERE loginId = ?",
         (new_value, login_id)
+    )
+    conn.commit()
+    conn.close()
+
+def delete_user(login_id: int):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        f"DELETE FROM users WHERE loginId = ?",
+        (login_id,)
     )
     conn.commit()
     conn.close()
