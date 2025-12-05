@@ -28,6 +28,14 @@ def admin_users_list():
         "users": users
     }
 
+@admin_router.get("/user/{loginId}")
+def admin_user_details(loginId: int):
+    db_user = get_user_by_id(loginId)
+    if db_user is None:
+        raise HTTPException(404, detail="User does not exist")
+    user = dict(db_user)
+    user.pop("hashedPassword", None)
+    return user
 
 @admin_router.post("/create")
 def admin_create_user(user: User):
