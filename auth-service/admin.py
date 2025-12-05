@@ -60,6 +60,8 @@ def admin_update_user(
     if new_data is None:
         raise HTTPException(400, detail="No payload")
 
+    update_user(data.loginId, new_data[0], new_data[1])
+
     updatedUser = dict(get_user_by_id(data.loginId))
     updatedUser.pop("hashedPassword", None)
     return updatedUser
