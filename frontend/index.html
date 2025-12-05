@@ -6,16 +6,12 @@
         <title>Login</title>
 
         <link rel="stylesheet" href="styles/main.css">
+        <link rel="stylesheet" href="styles/x-login.css">
     </head>
     <body>
         <h1>Login</h1>
 
-        <form id="loginForm">
-            <input type="email" placeholder="E-Mail" name="email" id="email" required>
-            <input type="password" placeholder="Password" name="password" id="password" required>
-            <button type="submit">Login</button>
-        </form>
-        <a href="/register.html"><small>Don't have an account?</small></a>
+        <x-login></x-login>
 
         <script src="js/main.js"></script>
         <script src="js/login.js"></script>
