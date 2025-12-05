@@ -3,12 +3,22 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Admin</title>
+        <title>Admin Dashboard</title>
 
         <link rel="stylesheet" href="styles/main.css">
         <link rel="stylesheet" href="styles/admin.css">
     </head>
     <body>
-        <h1>Admin Route</h1>
+        <x-nav></x-nav>
+
+        <main>
+            <h1>Admin Dashboard</h1>
+
+            <admin-user-controls></admin-user-controls>
+        </main>
+
+        <script src="/js/main.js"></script>
+        <script src="/js/x-nav.js"></script>
+        <script src="/js/admin-user-controls.js"></script>
     </body>
 </html>
