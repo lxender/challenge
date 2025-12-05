@@ -10,6 +10,8 @@ This project needs a .env file. Just rename the `example.env` file to .env an co
 
 You have two options to run this project. Docker is highly recommended.
 
+When the project is up and running, the frontend is available at http://localhost:5000/
+
 ### Docker
 If you have [Docker installed](https://docs.docker.com/engine/install/), you can run this project using the cli command `docker compose up` in the root directory.
 
