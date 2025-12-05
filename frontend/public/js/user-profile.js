@@ -23,7 +23,6 @@ class UserProfile extends HTMLElement {
         const json = await res.json();
 
         if (res.ok) {
-            console.log(json);
             this.data = json.profile;
             this.render();
         } else {
@@ -56,7 +55,6 @@ class UserProfile extends HTMLElement {
 
     render() {
         if (this.data === undefined) return;
-        console.log(this.data);
 
         this.innerHTML = "";
 

@@ -3,7 +3,6 @@ class AdminUserControls extends HTMLElement {
         super();
 
         this.token = sessionStorage.getItem("jwt");
-
         this.editingIndex = -1;
     }
 
@@ -22,6 +21,7 @@ class AdminUserControls extends HTMLElement {
 
         if (!res.ok) {
             alert(json.detail);
+            if (res.status === 401) window.location.href = "/";
             this.users = []
         }
 

@@ -1,5 +1,9 @@
-# Alex Auth
-Simple auth provider with a frontend.
+# User Management System Challenge
+Simple user management system with a frontend.
+
+There are two user-tiers: normal and admin users. By default, the first user to be registered, is an admin user. The id of the admin user can be changed in the .env file.
+
+Additionally, there are two dashboards: a self-service dashboard for users and an admin dashboard managing users.
 
 ## Usage
 This project needs a .env file. Just rename the `example.env` file to .env an configure the keys as you see fit.

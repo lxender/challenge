@@ -1,3 +1,25 @@
+class LogButton extends HTMLElement {
+    connectedCallback() {
+        const token = sessionStorage.getItem("jwt");
+        const isLoggedIn = token != null;
+        this.innerHTML = `
+            <button id="log-btn">${isLoggedIn ? "Log out" : "Log in"}</button>
+        `
+
+        const btn = this.querySelector("#log-btn");
+        btn.addEventListener("click", () => {
+            if (isLoggedIn) {
+                sessionStorage.removeItem("jwt");
+                window.location.href = "/";
+            } else {
+                window.location.href = "/login";
+            }
+        });
+    }
+}
+
+customElements.define("log-button", LogButton);
+
 class XNav extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `
@@ -8,17 +30,12 @@ class XNav extends HTMLElement {
                     <li><a href="/login">Login</a></li>
                     <li><a href="/dashboard">User Dashboard</a></li>
                     <li><a href="/admin">Admin Dashboard</a></li>
+                    <li><a href="${BACKEND_URL}/docs">API Docs</a></li>
                 </ul>
 
-                <button id="logout-btn">Log out</button>
+                <log-button></log-button>
             </nav>
         `;
-
-        const btn = this.querySelector("#logout-btn");
-        btn.addEventListener("click", () => {
-            sessionStorage.removeItem("jwt");
-            window.location.href = "/";
-        });
     }
 }
 
