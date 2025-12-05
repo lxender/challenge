@@ -1,0 +1,12 @@
+services:
+  testing:
+    container_name: challenge_tests
+    build:
+      context: ./auth-service
+      dockerfile: Dockerfile.test
+    environment:
+      DB_FILE: "/tmp/test.db"
+      PYTHONUNBUFFERED: 1
+    volumes:
+      - ./auth-service:/app
+    command: pytest --maxfail=1 --disable-warnings -q

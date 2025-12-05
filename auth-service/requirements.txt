@@ -1,5 +1,7 @@
-fastapi[standard]
+fastapi[all]
 pydantic
 passlib[argon2]
 pyjwt
 python-dotenv
+pytest
+requests
