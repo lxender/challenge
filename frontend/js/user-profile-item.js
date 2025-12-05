@@ -44,7 +44,7 @@ class UserProfileItem extends HTMLElement {
 
     save(key, newValue) {
         this._data[key] = newValue;
-        const copy = JSON.parse(JSON.stringify(this._data));
+        const copy = { ...this._data };
         this.onSave?.(copy);
         this.mode = "show";
     }

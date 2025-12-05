@@ -38,3 +38,13 @@ def create_user(email: str, name: str, hashed_password: str):
     )
     conn.commit()
     conn.close()
+
+def update_user(email: str, field: str, new_value: str):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        f"UPDATE users SET {field} = ? WHERE email = ?",
+        (new_value, email)
+    )
+    conn.commit()
+    conn.close()
